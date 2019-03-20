@@ -29,7 +29,8 @@ void setCursorPosition(int x, int y)
     SetConsoleCursorPosition(hOut, coord);
 }
 
-void Setup(){
+void Setup()
+{
 	gameOver = false;
 	dir = STOP;
 	x = width / 2 - 1;
@@ -38,13 +39,16 @@ void Setup(){
 	fruitY = irand(0, 20) % (height-2) + 1;
 	score = 0;
 	
-	for(int i = 0; i < width; i++){
+	for(int i = 0; i < width; i++)
+	{
 		NextMap[i][0] = '#';
 		NextMap[i][height-1] = '#';
 	}
 	
-	for(int i = 1; i < height-1; i++){
-		for(int j = 0; j < width; j++){
+	for(int i = 1; i < height-1; i++)
+	{
+		for(int j = 0; j < width; j++)
+		{
 			Map[j][i] = ' ';
 			if((j == 0) || (j == width-1))
 				NextMap[j][i] = '#';
@@ -55,25 +59,35 @@ void Setup(){
 	
 	NextMap[fruitX][fruitY] = 'F';
 	NextMap[x][y] = '0';
+	
+	setCursorPosition(0, 21);
+	cout << "Your score: " << score;
 }
 
 void Draw(){
-	for(int i = 0; i < height; i++){
-		for(int j = 0; j < width; j++){
-			if(Map[j][i] != NextMap[j][i]){
+	for(int i = 0; i < height; i++)
+	{
+		for(int j = 0; j < width; j++)
+		{
+			if(Map[j][i] != NextMap[j][i])
+			{
 				Map[j][i] = NextMap[j][i];
 				setCursorPosition(j, i);
 				cout << Map[j][i];
 			}
 		}
 	}
+	setCursorPosition(12, 21);
+	cout << score;
 	
 	setCursorPosition(100, 21);
 	usleep(microseconds);
 }
 
-void Input(){
-		if(_kbhit()){
+void Input()
+{
+	if(_kbhit())
+	{
 		switch (_getch())
 		{
 		case 'a':
@@ -98,16 +112,17 @@ void Input(){
 	}
 }
 
-void Logic(){
+void Logic()
+{
 	int prevX = tailX[0];
 	int prevY = tailY[0];
 	int prev2X, prev2Y;
 	tailX[0] = x;
 	tailY[0] = y;
-	for(int i = 1; i < nTail; i++)		// Создание хвоста и его обработка
+	for(int i = 1; i < nTail; i++)	
 	{
-		prev2X = tailX[i];				// Данные о местоположении хвоста по горизонтали
-		prev2Y = tailY[i];				// Данные о местоположении хвоста по вертикали
+		prev2X = tailX[i];			
+		prev2Y = tailY[i];		
 		tailX[i] = prevX;
 		tailY[i] = prevY;
 		prevX = prev2X;
@@ -115,7 +130,7 @@ void Logic(){
 	}
 	
 	
-	switch(dir){ // Настройка управления 
+	switch(dir){ 
 		case LEFT:
 			if(move != 1)
 			{
@@ -157,11 +172,11 @@ void Logic(){
 			break; 
 	}
 	
-	if((x == width-1) || (x == 0) || (y == height-1) || ( y == 0))	// Условия окончания игры
+	if((x == width-1) || (x == 0) || (y == height-1) || ( y == 0))
 		gameOver = true;
 	
-	/*if(x > width-2)			// Противоположное условие столкновения со стенками (160 строчка)
-		x = 0;					// Здесь, при столкновении со стенкой, змейка появится с противополжной стороны
+	/*if(x > width-2)		
+		x = 0;				
 	else
 		if(x < 0)
 			x = width - 2;
@@ -172,34 +187,24 @@ void Logic(){
 		if(y < 0)
 			y = height-1;*/
 		
-	for(int i = 0; i < nTail; i++){				// Условия окончания игры
+	for(int i = 0; i < nTail; i++)
+	{
 		if((tailX[i] == x) && (tailY[i] == y))
 			gameOver = true;
 		
 	}	
 	
-	if((x == fruitX) && (y == fruitY)){				// Создание нового фрукта
+	if((x == fruitX) && (y == fruitY))
+	{
 		score += 10;
 		
-		if(nTail == 0)
-		{
-			fruitX = irand(0, 20) % (width-2) + 1;
-			fruitY = irand(0, 20) % (height-2) + 1;
-		}
-		else
-			for(int i = 0; i < nTail; i++)
-			{
-				while(tailX[i] == fruitX)
-					fruitX = irand(0, 20) % (width-2) + 1;
-				while(tailY[i] == fruitY)
-					fruitY = irand(0, 20) % (height-2) + 1;
-			}
+		fruitX = irand(0, 20) % (width-2) + 1;
+		fruitY = irand(0, 20) % (height-2) + 1;
 		
 		nTail++;
 		microseconds -= 10000;	
 	}
 	
-	// ЗАГОТОВКА НОВОГО ФРЭЙМА
 	
 	for(int i = 1; i < height-1; i++)
 	{
@@ -228,8 +233,19 @@ int main(void)
 		Input();
 		Logic();
 	}
-	while(dir != ENDING)
-		Input();
+		sleep(2);
+		system("cls");
+		setCursorPosition(11, 5);
+		cout << "GAME";
+		setCursorPosition(12, 6);
+		cout << "IS";
+		setCursorPosition(11, 7);
+		cout << "OVER";
+		setCursorPosition(7, 10);
+		cout << "Your score: " << score;
+		
+		while(dir != ENDING)
+			Input();
 	
 	return 0;
 }
