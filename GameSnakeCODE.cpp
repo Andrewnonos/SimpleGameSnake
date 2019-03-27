@@ -138,10 +138,10 @@ void Logic()
 	int prev2X, prev2Y;
 	tailX[0] = x;
 	tailY[0] = y;
-	for(int i = 1; i < nTail; i++)		// Создание хвоста и его обработка
+	for(int i = 1; i < nTail; i++)		
 	{
-		prev2X = tailX[i];				// Данные о местоположении хвоста по горизонтали
-		prev2Y = tailY[i];				// Данные о местоположении хвоста по вертикали
+		prev2X = tailX[i];				
+		prev2Y = tailY[i];			
 		tailX[i] = prevX;
 		tailY[i] = prevY;
 		prevX = prev2X;
@@ -149,7 +149,7 @@ void Logic()
 	}
 	
 	
-	switch(dir){ // Настройка управления 
+	switch(dir){ 
 		case LEFT:
 			if(move != 1)
 			{
@@ -191,11 +191,11 @@ void Logic()
 			break; 
 	}
 	
-	if((x == width-1) || (x == 0) || (y == height-1) || ( y == 0))	// Условия окончания игры
+	if((x == width-1) || (x == 0) || (y == height-1) || ( y == 0))	
 		gameOver = true;
 	
-	/*if(x > width-2)			// Противоположное условие столкновения со стенками (160 строчка)
-		x = 0;					// Здесь, при столкновении со стенкой, змейка появится с противополжной стороны
+	/*if(x > width-2)			
+		x = 0;				
 	else
 		if(x < 0)
 			x = width - 2;
@@ -207,14 +207,14 @@ void Logic()
 			y = height-1;*/
 		
 	for(int i = 0; i < nTail; i++)
-	{				// Условия окончания игры
+	{				
 		if((tailX[i] == x) && (tailY[i] == y))
 			gameOver = true;
 		
 	}	
 	
 	if((x == fruitX) && (y == fruitY))
-	{				// Создание нового фрукта
+	{				
 		score += 10;
 		
 		fruitX = irand(0, 20) % (width-2) + 1;
@@ -223,8 +223,6 @@ void Logic()
 		nTail++;
 		microseconds -= 10000;	
 	}
-	
-	// ЗАГОТОВКА НОВОГО ФРЭЙМА
 	
 	for(int i = 1; i < height-1; i++)
 	{
