@@ -254,7 +254,7 @@ int main(void)
 			Input();
 			Logic();
 		}
-			GameOver();
+		GameOver();
 		
 		dir = STOP;
 		while(dir == STOP)
