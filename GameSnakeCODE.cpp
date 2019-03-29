@@ -96,7 +96,7 @@ void Draw(){
 			}
 		}
 	}
-	setCursorPosition(0, 21);
+	setCursorPosition(0, height+1);
 	cout << "Your score: " << score;
 	
 	setCursorPosition(100, 21);
@@ -194,8 +194,8 @@ void Logic()
 	if((x == width-1) || (x == 0) || (y == height-1) || ( y == 0))	
 		gameOver = true;
 	
-	/*if(x > width-2)			
-		x = 0;				
+	/*if(x > width-2)		
+		x = 0;			
 	else
 		if(x < 0)
 			x = width - 2;
@@ -214,7 +214,7 @@ void Logic()
 	}	
 	
 	if((x == fruitX) && (y == fruitY))
-	{				
+	{			
 		score += 10;
 		
 		fruitX = irand(0, 20) % (width-2) + 1;
@@ -254,7 +254,7 @@ int main(void)
 			Input();
 			Logic();
 		}
-		GameOver();
+			GameOver();
 		
 		dir = STOP;
 		while(dir == STOP)
