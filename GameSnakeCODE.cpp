@@ -191,27 +191,13 @@ void Logic()
 			break; 
 	}
 	
-	if((x == width-1) || (x == 0) || (y == height-1) || ( y == 0))	
+	if(NextMap[x][y] == '#')
 		gameOver = true;
-	
-	/*if(x > width-2)		
-		x = 0;			
-	else
-		if(x < 0)
-			x = width - 2;
 		
-	if(y > height-1)
-		y = 0;
-	else
-		if(y < 0)
-			y = height-1;*/
-		
-	for(int i = 0; i < nTail; i++)
-	{				
+	for(int i = 0; i < nTail; i++)			
 		if((tailX[i] == x) && (tailY[i] == y))
 			gameOver = true;
 		
-	}	
 	
 	if((x == fruitX) && (y == fruitY))
 	{			
