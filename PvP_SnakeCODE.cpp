@@ -294,7 +294,19 @@ void Input(){
 		case 'w':
 			KeyBoard[0] = UP;
 			break;
-////////////////////////////////
+		case  '0':
+			KeyBoard[0] = ENDING;
+			break;
+		case 'x':
+			gameOver1 = true;
+			gameOver2 = true;
+			break;		
+		}
+	}
+	if(_kbhit())
+	{
+		switch (_getch())
+		{
 		case '4':
 			KeyBoard[1] = LEFT;
 			break;
@@ -307,17 +319,8 @@ void Input(){
 		case '8':
 			KeyBoard[1] = UP;
 			break;
-////////////////////////////////
-		case  '0':
-			KeyBoard[0] = ENDING;
-			break;
-		case 'x':
-			gameOver1 = true;
-			gameOver2 = true;
-			break;		
 		}
 	}
-	
 }
 
 void Logic(){
