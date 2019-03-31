@@ -5,13 +5,10 @@
 #include <windows.h>
 #include<ctime>
 
-#define fruits fruitX1, fruitY1, fruitX2, fruitY2
-#define INTfruits int fruitX1, int fruitY1, int fruitX2, int fruitY2
-
 using namespace std;
 
-bool drw;
-bool gameOver;
+bool gameOver1;
+bool gameOver2;
 const int width = 21;										
 const int height = 21;
 const int STOP = 0, LEFT = 1, RIGHT = 2, UP = 3, DOWN = 4, ENDING = 5;
@@ -22,7 +19,7 @@ int x2, y2, fruitX2, fruitY2, score2 = 0, move2 = 0, nTail2;
 int tailX1[100], tailY1[100];
 int tailX2[100], tailY2[100];
 int KeyBoard[2] = {0, 0};
-unsigned int microseconds = 250000;
+unsigned int microseconds = 280000;
 
 ////////////////////////////////////////System functions/////////////////////////////////////////
 
@@ -48,58 +45,12 @@ void setCursorPosition(int x, int y){
 
 //////////////////////////////////Logical events in game/////////////////////////////////////////
 
-void GameOver(){
-	sleep(2);
-	system("cls");
-	setCursorPosition(11, 5);
-	cout << "GAME";
-	setCursorPosition(12, 6);
-	cout << "IS";
-	setCursorPosition(11, 7);
-	cout << "OVER";
-	setCursorPosition(8, 9);
-	if(score1 > score2)
-		cout << "Player1 wins!";
-	if(score1 < score2)
-		cout << "Player2 wins!";
-	if(score1 == score2)
-		cout << "DRAW MATCH";
-	setCursorPosition(4, 10);
-	cout << "PRESS 0 to end the game";
-	setCursorPosition(100, 100);
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-/////////////////////////////////Main logical functions//////////////////////////////////////////
-
-void Setup(){
-	gameOver = false;
-	drw = false;
-	/////////////////////////////////////////
-	KeyBoard[0] = STOP;
-	KeyBoard[1] = STOP;
-	/////////////////////////////////////////
-	x1 = width-10;
-	y1 = 2;
-	x2 = width-10;
-	y2 = height-3;
-	/////////////////////////////////////////
-	fruitX1 = irand(0, 20) % (width-2) + 1;
-	fruitY1 = irand(0, 20) % (height-2) + 1;	
-	fruitX2 = irand(0, 20) % (width-2) + 1;
-	fruitY2 = irand(0, 20) % (height-2) + 1;
-	/////////////////////////////////////////
-	score1 = 0;
-	score2 = 0;
-	
+void MapCreation(){
 	for(int i = 0; i < width; i++)
 	{
 		NextMap[i][0] = '#';
 		NextMap[i][height-1] = '#';
 	}
-	
 	for(int i = 1; i < height-1; i++)
 	{
 		for(int j = 0; j < width; j++)
@@ -112,10 +63,189 @@ void Setup(){
 		}
 	}
 	
+	for(int i = 0; i < 4; i++){
+		NextMap[i+2][2] = '#';
+		NextMap[i+15][2] = '#';
+		NextMap[i+2][18] = '#';
+		NextMap[i+15][18] = '#';
+	}
+	for(int i = 0; i < 3; i++){
+		NextMap[4][i+5] = '#';
+		NextMap[16][i+5] = '#';
+		NextMap[4][i+13] = '#';
+		NextMap[16][i+13] = '#';
+	}
+	for(int i = 0; i < 2; i++){
+		NextMap[8][i+1] = '#';
+		NextMap[12][i+1] = '#';
+		NextMap[8][i+18] = '#';
+		NextMap[12][i+18] = '#';
+	}
+	for(int i = 0; i < 7; i++){
+		NextMap[i+7][5] = '#';
+		NextMap[i+7][15] = '#';
+	}
+	for(int i = 0; i < 5; i++){
+		NextMap[i+3][10] = '#';
+		NextMap[i+13][10] = '#';
+	}
+	for(int i = 0; i < 3; i++){
+		NextMap[10][i+7] = '#';
+		NextMap[10][i+11] = '#';
+	}
+		
+	NextMap[1][5]= '#';
+	NextMap[19][5] = '#';
+	NextMap[1][15] = '#';
+	NextMap[19][15] = '#';
+	
 	NextMap[fruitX1][fruitY1] = 'F';
 	NextMap[fruitX2][fruitY2] = 'F';
 	NextMap[x1][y1] = '0';
 	NextMap[x2][y2] = '0';
+}
+
+void GameOver(){
+	sleep(2);
+	system("cls");
+		
+	setCursorPosition(11, 5);
+	cout << "GAME";
+	setCursorPosition(12, 6);
+	cout << "IS";
+	setCursorPosition(11, 7);
+	cout << "OVER";
+	setCursorPosition(8, 9);
+	
+	
+	if(gameOver1 == gameOver2)
+		cout << "DRAW MATCH";
+	else{
+		if(gameOver2)
+			cout << "Player1 wins!";
+		if(gameOver1)
+			cout << "Player2 wins!";
+	}
+	
+	setCursorPosition(4, 10);
+	cout << "PRESS 0 to end the game";
+	setCursorPosition(100, 100);
+}
+
+void randFruit(int& fruitX, int& fruitY){
+	tryAgain:
+		
+	fruitX = irand(0, 1000) % (width-2) + 1;
+	fruitY = irand(0, 1000) % (height-2) + 1;
+
+	if(NextMap[fruitX][fruitY] == '#')
+		goto tryAgain;
+}
+
+void Moving(int a, int& x, int& y, int& move){
+	switch(KeyBoard[a]){ 
+		case LEFT:
+			if(move != 1)
+			{
+				x--;
+				move = 2;
+			}
+			else
+				x++;
+			break; 
+			
+		case RIGHT:
+			if(move != 2)
+			{
+				x++;
+				move = 1;
+			}
+			else
+				x--;
+			break; 
+			
+		case DOWN:
+			if(move != 3)
+			{
+				y++;
+				move = 4;
+			}
+			else
+				y--;
+			break; 
+			
+		case UP:
+			if(move != 4)
+			{
+				y--;
+				move = 3;
+			}
+			else
+				y++; 
+			break; 
+	}
+}
+
+void tailInfo(int *tailX, int *tailY, int& nTail, int& x, int& y){
+	int prevX = tailX[0];
+	int prevY = tailY[0];
+	int prev2X, prev2Y;
+	tailX[0] = x;
+	tailY[0] = y;
+	for(int i = 1; i < nTail; i++)		
+	{
+		prev2X = tailX[i];				
+		prev2Y = tailY[i];	
+		tailX[i] = prevX;
+		tailY[i] = prevY;
+		prevX = prev2X;
+		prevY = prev2Y;
+	}
+}
+
+void FruitEating(int x, int y, int& nTail, int& score){
+	if((x == fruitX1) && (y == fruitY1))
+	{			
+		score += 10;
+		
+		randFruit(fruitX1, fruitY1);	
+		
+		nTail++;	
+	}
+	if((x == fruitX2) && (y == fruitY2))
+	{			
+		score += 10;
+		
+		randFruit(fruitX2, fruitY2);	
+		
+		nTail++;
+	}
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////Main logical functions//////////////////////////////////////////
+
+void Setup(){
+	MapCreation();
+	
+	gameOver1 = false;
+	gameOver2 = false;
+	/////////////////////////////////////////
+	KeyBoard[0] = STOP;
+	KeyBoard[1] = STOP;
+	/////////////////////////////////////////
+	x1 = width/2;
+	y1 = 2;
+	x2 = width/2;
+	y2 = height-3;
+	/////////////////////////////////////////
+	randFruit(fruitX1, fruitY1);
+	randFruit(fruitX2, fruitY2);
+	/////////////////////////////////////////
+	score1 = 0;
+	score2 = 0;
 }
 
 void Draw(){
@@ -140,6 +270,8 @@ void Draw(){
 	usleep(microseconds);
 }
 
+
+// Still trying to change this function because of it's inefficiency 
 void Input(){
 	if(_kbhit())
 	{
@@ -175,7 +307,8 @@ void Input(){
 			KeyBoard[0] = ENDING;
 			break;
 		case 'x':
-			gameOver = true;
+			gameOver1 = true;
+			gameOver2 = true;
 			break;		
 		}
 	}
@@ -213,201 +346,61 @@ void Input(){
 			KeyBoard[0] = ENDING;
 			break;
 		case 'x':
-			gameOver = true;
+			gameOver1 = true;
+			gameOver2 = true;
 			break;		
 		}
 	}
 }
 
 void Logic(){
-	int prevX1 = tailX1[0];
-	int prevY1 = tailY1[0];
-	int prev2X1, prev2Y1;
-	tailX1[0] = x1;
-	tailY1[0] = y1;
-	for(int i = 1; i < nTail1; i++)		
-	{
-		prev2X1 = tailX1[i];				
-		prev2Y1 = tailY1[i];	
-		tailX1[i] = prevX1;
-		tailY1[i] = prevY1;
-		prevX1 = prev2X1;
-		prevY1 = prev2Y1;
-	}
+	tailInfo(tailX1, tailY1, nTail1, x1, y1);
+	tailInfo(tailX2, tailY2, nTail2, x2, y2);
 	
-	int prevX2 = tailX2[0];
-	int prevY2 = tailY2[0];
-	int prev2X2, prev2Y2;
-	tailX2[0] = x2;
-	tailY2[0] = y2;
-	for(int i = 1; i < nTail2; i++)		
-	{
-		prev2X2 = tailX2[i];				
-		prev2Y2 = tailY2[i];	
-		tailX2[i] = prevX2;
-		tailY2[i] = prevY2;
-		prevX2 = prev2X2;
-		prevY2 = prev2Y2;
-	}	
+	Moving(0, x1, y1, move1);
+	Moving(1, x2, y2, move2);
 	
-	switch(KeyBoard[0]){ 
-		case LEFT:
-			if(move1 != 1)
-			{
-				x1--;
-				move1 = 2;
-			}
-			else
-				x1++;
-			break; 
-			
-		case RIGHT:
-			if(move1 != 2)
-			{
-				x1++;
-				move1 = 1;
-			}
-			else
-				x1--;
-			break; 
-			
-		case DOWN:
-			if(move1 != 3)
-			{
-				y1++;
-				move1 = 4;
-			}
-			else
-				y1--;
-			break; 
-			
-		case UP:
-			if(move1 != 4)
-			{
-				y1--;
-				move1 = 3;
-			}
-			else
-				y1++; 
-			break; 
-	}
-	switch(KeyBoard[1]){ 
-		case LEFT:
-			if(move2 != 1)
-			{
-				x2--;
-				move2 = 2;
-			}
-			else
-				x2++;
-			break; 
-			
-		case RIGHT:
-			if(move2 != 2)
-			{
-				x2++;
-				move2 = 1;
-			}
-			else
-				x2--;
-			break; 
-			
-		case DOWN:
-			if(move2 != 3)
-			{
-				y2++;
-				move2 = 4;
-			}
-			else
-				y2--;
-			break; 
-			
-		case UP:
-			if(move2 != 4)
-			{
-				y2--;
-				move2 = 3;
-			}
-			else
-				y2++; 
-			break; 
-	}
+	/////////////////////////////// Game ending ////////////////////////////////////////
 	
-	
-	/////////////////////////////// GAME ENDING ////////////////////////////////////////
 	if(NextMap[x1][y1] == '#')
-		gameOver = true;
+		gameOver1 = true;
 	if(NextMap[x2][y2] == '#')
-		gameOver = true;
+		gameOver2 = true;
 		
 	if((x1 == x2) && (y1 == y2)){
-		gameOver = true;
-		drw = true;
+		gameOver1 = true;
+		gameOver2 = true;
 	}
 	
 	for(int i = 0; i < nTail1; i++)
 	{				
 		if(((tailX1[i] == x1) && (tailY1[i] == y1)) || ((tailX1[i] == x2) && (tailY1[i] == y2)))
-			gameOver = true;
+			gameOver1 = true;
 	}
 	for(int i = 0; i < nTail2; i++)
 	{				
 		if(((tailX2[i] == x1) && (tailY2[i] == y1)) || ((tailX2[i] == x2) && (tailY2[i] == y2)))
-			gameOver = true;
-	}
-	///////////////////////////////////////////////////////////////////////////////////////
-	
-	if((x1 == fruitX1) && (y1 == fruitY1))
-	{			
-		score1 += 10;
-		
-		fruitX1 = irand(0, 20) % (width-2) + 1;
-		fruitY1 = irand(0, 20) % (height-2) + 1;
-		
-		nTail1++;
-		microseconds -= 1000;	
-	}
-	if((x1 == fruitX2) && (y1 == fruitY2))
-	{			
-		score1 += 10;
-		
-		fruitX2 = irand(0, 20) % (width-2) + 1;
-		fruitY2 = irand(0, 20) % (height-2) + 1;
-		
-		nTail1++;
-		microseconds -= 1000;	
+			gameOver2 = true;
 	}
 	
+	if(score1 == 250)
+		gameOver2 = true;
+	if(score2 == 250)
+		gameOver1 = true;
 	
+/////////////////////////////////////////////////////////////////////////////////////////////////
 	
-	if((x2 == fruitX1) && (y2 == fruitY1))
-	{			
-		score2 += 10;
-		
-		fruitX1 = irand(0, 20) % (width-2) + 1;
-		fruitY1 = irand(0, 20) % (height-2) + 1;
-		
-		nTail2++;
-		microseconds -= 1000;	
-	}
-	if((x2 == fruitX2) && (y2 == fruitY2))
-	{			
-		score1 += 10;
-		
-		fruitX2 = irand(0, 20) % (width-2) + 1;
-		fruitY2 = irand(0, 20) % (height-2) + 1;
-		
-		nTail2++;
-		microseconds -= 1000;	
-	}
+	FruitEating(x1, y1, nTail1, score1);
+	FruitEating(x2, y2, nTail2, score2);
 	
-	/////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////Map drawing//////////////////////////////////////////////
 	
 	for(int i = 1; i < height-1; i++)
 	{
 		for(int j = 1; j < width-1; j++)
 		{
-			NextMap[j][i] = ' ';
+			if(NextMap[j][i] != '#')
+				NextMap[j][i] = ' ';
 			
 			for(int nn = 0; nn < nTail1; nn++)
 				if((i == tailY1[nn]) && (j == tailX1[nn]))
@@ -437,7 +430,7 @@ int main(void){
 	
 	Setup();
 	while(KeyBoard[0] != ENDING){
-		while(!gameOver)
+		while(!gameOver1 && !gameOver2)
  		{
 		 	Draw();
 			Input();
