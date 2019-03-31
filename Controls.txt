@@ -1,16 +1,16 @@
-ИГРОК №1
-W - движение вверх
-A - движение влево
-S - движение вниз
-D - движение вправо
+PLAYER №1
+W - moving up
+A - moving left
+S - moving down
+D - moving right
 
-ИГРОК №2 (Правая сторона клавиатуры)
-8 - движение вверх
-4 - движение влево
-5 - движение вниз
-6 - движение вправо
+PLAYER №2 (Right part of the keyboard)
+8 - moving up
+4 - moving left
+5 - moving down
+6 - moving right
 
 
-0 (нуль) - нажать после появления экрана "GAME IS OVER" для завершения программы
+0 (zero) - press after the appearance of "GAME IS OVER" to end the program
 
-ТРЕБУЕТСЯ АНГЛИЙСКАЯ РАСКЛАДКА КЛАВИАТУРЫ
+ENGLISH KEYBOARD NEEDED
