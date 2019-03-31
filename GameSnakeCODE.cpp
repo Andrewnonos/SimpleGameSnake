@@ -103,29 +103,47 @@ void Draw(){
 	usleep(microseconds);
 }
 
-void Input()
-{
+void Input(){
 	if(_kbhit())
 	{
 		switch (_getch())
 		{
 		case 'a':
-			dir = LEFT;
+			KeyBoard[0] = LEFT;
 			break;
 		case 'd':
-			dir = RIGHT;
+			KeyBoard[0] = RIGHT;
 			break;
 		case 's':
-			dir = DOWN;
+			KeyBoard[0] = DOWN;
 			break;
 		case 'w':
-			dir = UP;
-			break;
-		case 'x':
-			gameOver = true;
+			KeyBoard[0] = UP;
 			break;
 		case  '0':
-			dir = ENDING;
+			KeyBoard[0] = ENDING;
+			break;
+		case 'x':
+			gameOver1 = true;
+			gameOver2 = true;
+			break;		
+		}
+	}
+	if(_kbhit())
+	{
+		switch (_getch())
+		{
+		case '4':
+			KeyBoard[1] = LEFT;
+			break;
+		case '6':
+			KeyBoard[1] = RIGHT;
+			break;
+		case '5':
+			KeyBoard[1] = DOWN;
+			break;
+		case '8':
+			KeyBoard[1] = UP;
 			break;
 		}
 	}
