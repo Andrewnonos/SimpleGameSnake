@@ -1,5 +1,9 @@
 # SimpleGameSnake PvP
 The game graphics must include only symbols from Unicode.
-My goal is to create short and clear code for this game. There is a lot of undone parts of the code
-but I'm trying to make something new. When there won't be any idea, then I'll start to make my code
-understandable.
+My goal is to create short and clear code for this game.
+
+There are two persons each of them has one snake ("0") in control.
+ 
+ Victory conditions are:
+    1) Player earned 250 points by eating fruits ("F");
+    2) Opponent's snake died from hitting the wall ("#") or from hitting player's tail ("o").
