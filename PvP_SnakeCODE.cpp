@@ -270,8 +270,6 @@ void Draw(){
 	usleep(microseconds);
 }
 
-
-// Still trying to change this function because of it's inefficiency 
 void Input(){
 	if(_kbhit())
 	{
