@@ -118,8 +118,15 @@ void GameOver(){
 	setCursorPosition(8, 9);
 	
 	
-	if(gameOver1 == gameOver2)
-		cout << "DRAW MATCH";
+	if(gameOver1 == gameOver2){
+		if(score1 == score2)
+			cout << "DRAW MATCH";
+		else
+			if(score1 > score2)
+				cout << "Player1 wins!";
+			else
+				cout << "Player2 wins!";
+	}
 	else{
 		if(gameOver2)
 			cout << "Player1 wins!";
@@ -310,45 +317,7 @@ void Input(){
 			break;		
 		}
 	}
-	if(_kbhit())
-	{
-		switch (_getch())
-		{
-		case 'a':
-			KeyBoard[0] = LEFT;
-			break;
-		case 'd':
-			KeyBoard[0] = RIGHT;
-			break;
-		case 's':
-			KeyBoard[0] = DOWN;
-			break;
-		case 'w':
-			KeyBoard[0] = UP;
-			break;
-////////////////////////////////
-		case '4':
-			KeyBoard[1] = LEFT;
-			break;
-		case '6':
-			KeyBoard[1] = RIGHT;
-			break;
-		case '5':
-			KeyBoard[1] = DOWN;
-			break;
-		case '8':
-			KeyBoard[1] = UP;
-			break;
-////////////////////////////////
-		case  '0':
-			KeyBoard[0] = ENDING;
-			break;
-		case 'x':
-			gameOver1 = true;
-			gameOver2 = true;
-			break;		
-		}
-	}
+	
 }
 
 void Logic(){
